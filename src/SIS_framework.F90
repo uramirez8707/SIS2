@@ -4,7 +4,7 @@ module SIS_framework
 
 ! This file is part of SIS2. See LICENSE.md for the license.
 
-use fms_io_mod,        only : set_domain, nullify_domain
+use MOM_io_infra,      only : set_domain=>MOM_set_domain, nullify_domain=>MOM_nullify_domain
 
 use MOM_coms_infra,    only : SIS_chksum=>field_chksum
 use MOM_coupler_types, only : coupler_1d_bc_type, coupler_2d_bc_type, coupler_3d_bc_type
