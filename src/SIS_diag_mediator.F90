@@ -8,6 +8,7 @@ use MOM_coms,               only : PE_here
 use MOM_diag_manager_infra, only : diag_manager_init=>MOM_diag_manager_init
 use MOM_diag_manager_infra, only : register_diag_field_infra, register_static_field_infra
 use MOM_diag_manager_infra, only : send_data_infra, diag_axis_init=>MOM_diag_axis_init, EAST, NORTH
+use MOM_diag_manager_infra, only : diag_send_complete_infra
 use MOM_error_handler,      only : SIS_error=>MOM_error, FATAL, is_root_pe
 use MOM_file_parser,        only : get_param, log_param, log_version, param_file_type
 use MOM_safe_alloc,         only : safe_alloc_ptr, safe_alloc_alloc
@@ -521,6 +522,7 @@ end subroutine enable_SIS_averaging
 subroutine disable_SIS_averaging(diag_cs)
   type(SIS_diag_ctrl), intent(inout) :: diag_cs !< A structure that is used to regulate diagnostic output
 
+  call diag_send_complete_infra()
   diag_cs%time_int = 0.0
   diag_cs%ave_enabled = .false.
 
