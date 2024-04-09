@@ -23,7 +23,7 @@ public safe_alloc_ptr, safe_alloc_alloc
 public enable_SIS_averaging, disable_SIS_averaging, query_SIS_averaging_enabled
 public SIS_diag_mediator_init, SIS_diag_mediator_end, set_SIS_diag_mediator_grid
 public SIS_diag_mediator_close_registration, get_SIS_diag_time_end
-public diag_axis_init, register_static_field
+public diag_axis_init, register_static_field, SIS_diag_send_complete
 
 !> Make a diagnostic available for averaging or output.
 interface post_SIS_data
@@ -522,7 +522,6 @@ end subroutine enable_SIS_averaging
 subroutine disable_SIS_averaging(diag_cs)
   type(SIS_diag_ctrl), intent(inout) :: diag_cs !< A structure that is used to regulate diagnostic output
 
-  call diag_send_complete_infra()
   diag_cs%time_int = 0.0
   diag_cs%ave_enabled = .false.
 
@@ -976,5 +975,9 @@ subroutine assert(logical_arg, msg)
   endif
 
 end subroutine assert
+
+subroutine SIS_diag_send_complete()
+  call diag_send_complete_infra()
+end subroutine SIS_diag_send_complete
 
 end module SIS_diag_mediator
