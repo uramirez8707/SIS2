@@ -39,6 +39,7 @@ use SIS_diag_mediator, only : enable_SIS_averaging, disable_SIS_averaging
 use SIS_diag_mediator, only : post_SIS_data, post_data=>post_SIS_data
 use SIS_diag_mediator, only : query_SIS_averaging_enabled, SIS_diag_ctrl
 use SIS_diag_mediator, only : register_diag_field=>register_SIS_diag_field
+use SIS_diag_mediator, only : SIS_diag_send_complete
 use SIS_dyn_bgrid,     only : SIS_B_dyn_CS, SIS_B_dynamics, SIS_B_dyn_init
 use SIS_dyn_bgrid,     only : SIS_B_dyn_register_restarts, SIS_B_dyn_end
 use SIS_dyn_cgrid,     only : SIS_C_dyn_CS, SIS_C_dynamics, SIS_C_dyn_init
@@ -607,6 +608,7 @@ subroutine SIS_dynamics_trans(IST, OSS, FIA, IOF, dt_slow, CS, icebergs_CS, G, U
           enddo ; enddo
         endif
 
+        call SIS_diag_send_complete()
         call cpu_clock_end(iceClock4)
 
       enddo ! nds=1,ndyn_steps
@@ -1141,6 +1143,7 @@ subroutine SIS_merged_dyn_cont(OSS, FIA, IOF, DS2d, IST, dt_cycle, Time_start, G
     DS2d%nts = DS2d%nts + CS%adv_substeps
     call cpu_clock_end(iceClock4)
 
+    call SIS_diag_send_complete()
   enddo ! nds=1,ndyn_steps
 
 end subroutine SIS_merged_dyn_cont
@@ -1360,6 +1363,7 @@ subroutine slab_ice_dyn_trans(IST, OSS, FIA, IOF, dt_slow, CS, G, US, IG, tracer
       call write_ice_statistics(IST, CS%Time, CS%n_calls, G, US, IG, CS%sum_output_CSp, &
                                 message="      Post_transport")! , check_column=.true.)
 
+    call SIS_diag_send_complete()
   enddo ! nds=1,ndyn_steps
   call finish_ocean_top_stresses(IOF, G)
 
